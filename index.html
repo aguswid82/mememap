@@ -1,0 +1,376 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080b12">
+<title>MemeMap - See Where Crypto Moves</title>
+
+<style>
+:root {
+  --bg: #080b12;
+  --panel: #111827;
+  --border: #253047;
+  --text: #f4f6fc;
+  --muted: #8994a8;
+  --green: #35d49a;
+  --blue: #648cff;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+}
+
+header {
+  padding: 22px 6%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+
+.logo {
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.logo span { color: var(--green); }
+
+.tagline {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+nav {
+  display: flex;
+  gap: 22px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+nav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+nav a:hover { color: var(--green); }
+
+main {
+  max-width: 1200px;
+  margin: auto;
+  padding: 35px 6%;
+}
+
+.welcome {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+h1 {
+  font-size: clamp(26px, 5vw, 38px);
+  margin: 0 0 10px;
+}
+
+.subtitle { color: var(--muted); }
+
+.status {
+  background: #102a24;
+  color: var(--green);
+  padding: 9px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin: 30px 0;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.card-label {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.card-value {
+  font-size: 25px;
+  font-weight: bold;
+  margin-top: 12px;
+}
+
+.green { color: var(--green); }
+.blue { color: var(--blue); }
+
+.section-title {
+  font-size: 21px;
+  margin: 35px 0 16px;
+}
+
+.map {
+  min-height: 230px;
+  background:
+    radial-gradient(ellipse at 25% 40%, #173c43 0%, transparent 35%),
+    radial-gradient(ellipse at 70% 55%, #202c55 0%, transparent 38%),
+    #101827;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 25px;
+}
+
+.map-icon { font-size: 45px; }
+
+.map h2 { margin-bottom: 5px; }
+
+.map p {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.map-label {
+  color: var(--green);
+  font-size: 12px;
+  margin-top: 12px;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+input {
+  background: var(--panel);
+  color: white;
+  border: 1px solid var(--border);
+  padding: 12px;
+  border-radius: 9px;
+  width: 100%;
+  max-width: 300px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+th, td {
+  padding: 16px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+th { color: var(--muted); }
+
+.token {
+  font-weight: bold;
+}
+
+.chain {
+  color: var(--blue);
+}
+
+.risk {
+  color: var(--green);
+}
+
+footer {
+  text-align: center;
+  padding: 30px;
+  color: var(--muted);
+  font-size: 12px;
+  border-top: 1px solid var(--border);
+  margin-top: 45px;
+}
+
+@media(max-width: 700px) {
+  nav { display: none; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  main { padding: 25px 4%; }
+  .card { padding: 14px; }
+  .card-value { font-size: 21px; }
+  table { font-size: 11px; }
+  th, td { padding: 12px 5px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div>
+    <div class="logo">MEME<span>MAP</span></div>
+    <div class="tagline">SEE WHERE CRYPTO MOVES</div>
+  </div>
+
+  <nav>
+    <a href="#dashboard">Dashboard</a>
+    <a href="#map">Global Map</a>
+    <a href="#tokens">Tokens</a>
+    <a href="#about">About</a>
+  </nav>
+</header>
+
+<main id="dashboard">
+
+  <section class="welcome">
+    <div>
+      <h1>Explore the Meme Coin World.</h1>
+      <div class="subtitle">
+        Discover tokens. Track whales. Understand risks.
+      </div>
+    </div>
+    <div class="status">● MEMEMAP V1 PROTOTYPE</div>
+  </section>
+
+  <section class="stats">
+    <div class="card">
+      <div class="card-label">Supported Chains</div>
+      <div class="card-value blue">Multi-chain</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Token Scanner</div>
+      <div class="card-value green">Planned</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Whale Tracking</div>
+      <div class="card-value">Planned</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Risk Analysis</div>
+      <div class="card-value">Planned</div>
+    </div>
+  </section>
+
+  <section id="map">
+    <h2 class="section-title">🌍 Global Meme Coin Map</h2>
+
+    <div class="map">
+      <div class="map-icon">🌐</div>
+      <h2>The World of Meme Coins</h2>
+      <p>
+        Discover meme coin activity across countries
+        and cities around the world.
+      </p>
+      <div class="map-label">
+        GLOBAL MAPPING — COMING SOON
+      </div>
+    </div>
+  </section>
+
+  <section id="tokens">
+    <h2 class="section-title">🔥 Token Explorer</h2>
+
+    <div class="toolbar">
+      <div>
+        <strong>Discover Tokens</strong>
+        <div class="tagline">Demo data — not live market data</div>
+      </div>
+      <input
+        type="search"
+        id="search"
+        placeholder="Search token..."
+        aria-label="Search tokens"
+      >
+    </div>
+
+    <div class="card" style="overflow-x:auto">
+      <table>
+        <thead>
+          <tr>
+            <th>Token</th>
+            <th>Chain</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="tokenList">
+          <tr>
+            <td class="token">BONK</td>
+            <td class="chain">Solana</td>
+            <td class="risk">Demo</td>
+          </tr>
+          <tr>
+            <td class="token">PEPE</td>
+            <td class="chain">Ethereum</td>
+            <td class="risk">Demo</td>
+          </tr>
+          <tr>
+            <td class="token">FLOKI</td>
+            <td class="chain">Multi-chain</td>
+            <td class="risk">Demo</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="about">
+    <h2 class="section-title">About MemeMap</h2>
+    <div class="card">
+      <h3>One Map. Multiple Chains. Global Discovery.</h3>
+      <p style="color:#8994a8;line-height:1.8">
+        MemeMap is a multi-chain meme coin discovery
+        and analysis platform designed to help users
+        explore tokens, monitor whale activity,
+        and understand token risks.
+      </p>
+      <div class="green">Powered by $MMAP concept</div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  MEMEMAP © 2026 — SEE WHERE CRYPTO MOVES
+  <br><br>
+  Early development prototype. Data integrations are not active yet.
+</footer>
+
+<script>
+const search = document.getElementById("search");
+
+search.addEventListener("input", function() {
+  const query = this.value.toLowerCase();
+  const rows = document.querySelectorAll("#tokenList tr");
+
+  rows.forEach(row => {
+    row.style.display =
+      row.textContent.toLowerCase().includes(query)
+      ? ""
+      : "none";
+  });
+});
+</script>
+
+</body>
+</html>
