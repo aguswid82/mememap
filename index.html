@@ -372,5 +372,112 @@ search.addEventListener("input", function() {
 });
 </script>
 
+<!-- MEMEMAP CA SCANNER -->
+<section id="mmap-scanner" style="margin:24px auto;padding:20px;background:#111827;border:1px solid #253047;border-radius:14px;color:#f4f6fc;max-width:900px;font-family:Arial,sans-serif">
+  <h2 style="color:#35d49a">🔎 MemeMap CA Scanner</h2>
+  <p style="color:#8994a8">Multi-chain token market scanner</p>
+
+  <input id="mmap-ca" type="text"
+    placeholder="Paste Token Contract Address (CA)"
+    style="width:100%;box-sizing:border-box;padding:15px;background:#080b12;color:white;border:1px solid #39465a;border-radius:9px;font-size:15px">
+
+  <button id="mmap-scan" style="width:100%;margin-top:12px;padding:15px;background:#35d49a;color:#06120c;border:0;border-radius:9px;font-weight:bold;font-size:16px">
+    SCAN TOKEN
+  </button>
+
+  <p id="mmap-status" style="color:#8994a8"></p>
+  <div id="mmap-result"></div>
+  <p style="font-size:12px;color:#8994a8">
+    Market data provided by DexScreener. Market information is not a security audit or investment advice.
+  </p>
+</section>
+
+<script>
+(function () {
+  const input = document.getElementById("mmap-ca");
+  const button = document.getElementById("mmap-scan");
+  const status = document.getElementById("mmap-status");
+  const result = document.getElementById("mmap-result");
+
+  function addRow(label, value) {
+    const row = document.createElement("p");
+    row.style.cssText = "padding:10px;border-bottom:1px solid #253047";
+    const strong = document.createElement("strong");
+    strong.textContent = label + ": ";
+    row.append(strong, document.createTextNode(value));
+    result.appendChild(row);
+  }
+
+  function money(value) {
+    const n = Number(value);
+    return Number.isFinite(n)
+      ? "$" + n.toLocaleString("en-US", {maximumFractionDigits: 4})
+      : "N/A";
+  }
+
+  button.addEventListener("click", async function () {
+    const ca = input.value.trim();
+    result.replaceChildren();
+
+    if (!/^[a-zA-Z0-9]{20,100}$/.test(ca)) {
+      status.textContent = "Please enter a valid contract address.";
+      return;
+    }
+
+    button.disabled = true;
+    status.textContent = "Scanning token across supported chains...";
+
+    try {
+      const response = await fetch(
+        "https://api.dexscreener.com/latest/dex/tokens/" +
+        encodeURIComponent(ca)
+      );
+
+      if (!response.ok) throw new Error("API unavailable");
+
+      const data = await response.json();
+      const pairs = data.pairs || [];
+
+      if (!pairs.length) {
+        status.textContent = "No market pairs found for this CA.";
+        return;
+      }
+
+      pairs.sort((a, b) =>
+        Number(b.liquidity?.usd || 0) -
+        Number(a.liquidity?.usd || 0)
+      );
+
+      const p = pairs[0];
+
+      status.textContent = "Scan completed successfully.";
+
+      addRow("Token", p.baseToken?.name || "Unknown");
+      addRow("Symbol", p.baseToken?.symbol || "N/A");
+      addRow("Network", p.chainId || "N/A");
+      addRow("DEX", p.dexId || "N/A");
+      addRow("Price USD", money(p.priceUsd));
+      addRow("Liquidity", money(p.liquidity?.usd));
+      addRow("24H Volume", money(p.volume?.h24));
+      addRow("FDV", money(p.fdv));
+
+      const link = document.createElement("a");
+      link.textContent = "View market pair on DexScreener";
+      link.href = p.url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.style.color = "#35d49a";
+      result.appendChild(link);
+
+    } catch (error) {
+      status.textContent =
+        "Scan failed. Please check your connection and try again.";
+    } finally {
+      button.disabled = false;
+    }
+  });
+})();
+</script>
+
 </body>
 </html>
